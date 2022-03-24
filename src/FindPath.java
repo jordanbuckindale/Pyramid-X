@@ -134,6 +134,27 @@ public class FindPath {
 	 * @return true if current chamber is dim, return false otherwise.
 	 */
 	public boolean isDim (Chamber currentChamber) {
+		
+		// check if current chamber is null or not, is not light and is not sealed.
+		if ((!(currentChamber == null))&& (!currentChamber.isSealed()) && !currentChamber.isLighted()) {
+		
+			// must check neighbouring chambers to see if they are lit before assigning boolean.
+			for (int i =0; i < 6; i++) {
+				
+				// create temporary chamber for neighbour.
+				Chamber neighbour = currentChamber.getNeighbour(i);
+				
+				// check if neighbour meets the requirements.
+				if ((!(neighbour == null)) && neighbour.isLighted()) {
+					
+					// return boolean variable.
+					return true;
+				}
+				
+			}
+		}
+		
+		// return boolean variable.
 		return false;
 	
 	}
@@ -145,13 +166,14 @@ public class FindPath {
 	 */
 	public void bestChamber (Chamber currentChamber) {
 		
+		
 	}
 	
 	
 	
 }
 
-/* FINDPATH ALGORITHM
+/* FINDPATH ALGORITHM (Path Method)
  * 
  * 1. Get empty stack
  * 2. Get the starting chamber and number of treasures
@@ -160,7 +182,7 @@ public class FindPath {
  * 		- peak top stack to get the current chamber
  * 		- check if the treasure chamber, and if it is equal to treasure exit while loop
  * 		- use FindPath class and bestChamber method to get best neighbouring chamber
- * 		- if c is not null push in stack and mark as pushed, otherwise Pop and mark Popped
+ * 		- if c is not null push in stack and mark as pushed, otherwise Pop last chamber and mark as Popped (dead end)
  * 5. After while loop, return stack
  * 
  */
