@@ -41,10 +41,79 @@ public class FindPath {
 	
 	/**
 	 *  This method finds a path from the entrance to all the treasure chambers that can be reached by satisfying the constraints specified in the introduction.
-	 * @return
+	 *  @return
 	 */
-	public DLStack path() {
-		return null;
+	public DLStack<Chamber> path() { //refer comments at bottom of file
+		
+		// delcare stack for potential chambers of path.
+		DLStack<Chamber> chamberStack;
+		// create empty stack for chambers.
+		chamberStack = new DLStack<Chamber>();
+		
+		// get the starting chambers and number of treasures.
+		
+		// variable for starting chamber.
+		Chamber enterance = pyramidMap.getEntrance();
+		// variable for number of treasures.
+		int numTreasures = pyramidMap.getNumTreasures();
+		// creates a variable for treasures found by program.
+		int numTreasuresFound = 0;
+		
+		// put enterance in stack and begin.
+		chamberStack.push(enterance);
+		// once enterance chamber is pushed, mark as pushed.
+		enterance.markPushed();
+		
+		// while stack is NOT EMPTY.
+		while (!chamberStack.isEmpty()) {
+			
+			// peak top stack to get current chamber.
+			Chamber current = chamberStack.peek();
+			
+			// check if treasure chamber and if all treasures are found, exit while loop.
+			if (current.isTreasure() && numTreasures == numTreasuresFound) {
+				
+				// exits while loop.
+				break;
+			}
+			// use bestChamber method to get best neighbouring chamber.
+			else {
+				
+				// initialize next chamber.
+				Chamber nextChamber;
+				// use bestChamber method to get best chamber.
+				nextChamber = current.bestChamber();
+				
+				// if next chamber is NOT NULL, push into stack and mark and pushed, otherwise pop and mark popped.
+				if (!(nextChamber == null)) {
+					
+					// push into stack.
+					chamberStack.push(nextChamber);
+					// mark chamber as pushed.
+					nextChamber.markPushed();
+					
+					// check to see if next chamber was treasure.
+					if (nextChamber.isTreasure()) {
+						
+						// increment treasures found if current chamber contains treasure.
+						numTreasuresFound ++;
+					}
+				}
+				// pop last chamber and mark as popped. (dead end)
+				else {
+					
+					// pop out the last chamber of stack.
+					Chamber last = chamberStack.pop();
+					// mark last chamber of stack as popped.
+					last.markPopped();
+				}
+				
+			}
+				
+		}
+		
+		// return stack.
+		return chamberStack;
 	}
 	
 	
@@ -81,3 +150,17 @@ public class FindPath {
 	
 	
 }
+
+/* FINDPATH ALGORITHM
+ * 
+ * 1. Get empty stack
+ * 2. Get the starting chamber and number of treasures
+ * 3. Push chamber into stack, mark chamber as pushed
+ * 4. While stack is NOT EMPTY:
+ * 		- peak top stack to get the current chamber
+ * 		- check if the treasure chamber, and if it is equal to treasure exit while loop
+ * 		- use FindPath class and bestChamber method to get best neighbouring chamber
+ * 		- if c is not null push in stack and mark as pushed, otherwise Pop and mark Popped
+ * 5. After while loop, return stack
+ * 
+ */
