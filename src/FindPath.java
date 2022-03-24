@@ -82,7 +82,7 @@ public class FindPath {
 				// initialize next chamber.
 				Chamber nextChamber;
 				// use bestChamber method to get best chamber.
-				nextChamber = current.bestChamber();
+				nextChamber = this.bestChamber(current);
 				
 				// if next chamber is NOT NULL, push into stack and mark and pushed, otherwise pop and mark popped.
 				if (!(nextChamber == null)) {
@@ -147,14 +147,14 @@ public class FindPath {
 				// check if neighbour meets the requirements.
 				if ((!(neighbour == null)) && neighbour.isLighted()) {
 					
-					// return boolean variable.
+					// return boolean.
 					return true;
 				}
 				
 			}
 		}
 		
-		// return boolean variable.
+		// return boolean.
 		return false;
 	
 	}
@@ -164,13 +164,61 @@ public class FindPath {
 	 * Selects the best chamber to move to from currentChamber according to restrictions.
 	 * @param currentChamber
 	 */
-	public void bestChamber (Chamber currentChamber) {
+	public Chamber bestChamber (Chamber currentChamber) {
 		
+		// declare default variable for index of best chamber.
+		int bestChamberIndex;
 		
+		// set bestChamberIndex as -1 to indicate no chamber has been found yet.
+		bestChamberIndex = -1;
+
+		//boolean treasure = false, lit = false; // checking for an occurance of any of these kinds of neighbouring chambers
+
+		// iterate through neighbouring chambers going from 5 to 0 to get smallest index.
+		for (int i = 5; i >= 0; i --) {
+			
+			// get neighbour chamber.
+			Chamber neighbour = currentChamber.getNeighbour(i);
+			
+			// if the neighbouring chamber at index i is not null, then get the best chamber to move to. 
+			if (!(neighbour == null)) {
+							
+				// check if chamber is marked or not.
+				if ((!neighbour.isMarked()) && neighbour.isTreasure()) {
+					
+					// set best index as current index i.
+					bestChamberIndex = i;
+				}
+				
+				else if ((!neighbour.isMarked()) && neighbour.isLighted()) {
+					
+					// set best index as current index i.
+					bestChamberIndex = i;
+				}
+				
+				else if (this.isDim(neighbour)) {
+					
+					// set best index as current index i.
+					bestChamberIndex = i;
+				}
+			}
+			else {
+				
+				// if the neighbouring chamber at index i is null, then simply continue.
+				continue;
+			}
+		}		
+				
+
+		if (bestChamberIndex == -1) {
+			return null;
+		}
+
+		else {
+			return currentChamber.getNeighbour(bestChamberIndex);
+		}
 	}
-	
-	
-	
+			
 }
 
 /* FINDPATH ALGORITHM (Path Method)
