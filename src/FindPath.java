@@ -31,7 +31,7 @@ public class FindPath {
 			// assign provided map to pyramid map variable.
 			this.pyramidMap = new Map(fileName); 
 		}
-		// catch expections that occur while trying to open file.
+		// catch expe ctions that occur while trying to open file.
 		catch (Exception e){
 			// present message from given files.
 			e.getMessage();
@@ -69,7 +69,7 @@ public class FindPath {
 			
 			// peak top stack to get current chamber.
 			Chamber current = chamberStack.peek();
-			
+			System.out.println(current);
 			// check if treasure chamber and if all treasures are found, exit while loop.
 			if (current.isTreasure() && numTreasures == numTreasuresFound) {
 				
@@ -83,7 +83,7 @@ public class FindPath {
 				Chamber nextChamber;
 				// use bestChamber method to get best chamber.
 				nextChamber = this.bestChamber(current);
-				
+			
 				// if next chamber is NOT NULL, push into stack and mark and pushed, otherwise pop and mark popped.
 				if (!(nextChamber == null)) {
 					
@@ -171,11 +171,13 @@ public class FindPath {
 		
 		// set bestChamberIndex as -1 to indicate no chamber has been found yet.
 		bestChamberIndex = -1;
+		
+		// create boolean variables to ensure first chamber that meets the desired conditions are meet.
+		boolean lightFound = false;
+		boolean dimFound = false; 
 
-		//boolean treasure = false, lit = false; // checking for an occurance of any of these kinds of neighbouring chambers
-
-		// iterate through neighbouring chambers going from 5 to 0 to get smallest index.
-		for (int i = 5; i >= 0; i --) {
+		// iterate through neighbouring chambers going from 0-5 index.
+		for (int i = 0; i <= 5; i ++) {
 			
 			// get neighbour chamber.
 			Chamber neighbour = currentChamber.getNeighbour(i);
@@ -184,27 +186,40 @@ public class FindPath {
 			if (!(neighbour == null)) {
 							
 				// check if chamber is marked or not.
-				if ((!neighbour.isMarked()) && neighbour.isTreasure()) {
+				if (!neighbour.isMarked()) {
 					
-					// set best index as current index i.
-					bestChamberIndex = i;
-				}
-				
-				else if ((!neighbour.isMarked()) && neighbour.isLighted()) {
+					// check if chamber is treasure.
+					if (neighbour.isTreasure()) {
 					
-					// set best index as current index i.
-					bestChamberIndex = i;
-				}
-				
-				else if (this.isDim(neighbour)) {
+						// set best index as current index i.
+						bestChamberIndex = i;
+						break;
+					}
 					
-					// set best index as current index i.
-					bestChamberIndex = i;
+					// check if chamber is lighted.
+					if (neighbour.isLighted() && !lightFound) {
+						
+						// set best index as current index i.
+						bestChamberIndex = i;
+						
+						// set light found as true if found.
+						lightFound = true;
+					}
+					
+					// check if chamber is dimmed.
+					if (this.isDim(neighbour) && !dimFound && !lightFound) {
+						
+						// set best index as current index i.
+						bestChamberIndex = i;
+						
+						// set dim found as true if found.
+						dimFound = true;
+					}
 				}
 			}
 			else {
 				
-				// if the neighbouring chamber at index i is null, then simply continue.
+				// if the neighbouring chamber at index i is null, then simply continue to next index.
 				continue;
 			}
 		}		

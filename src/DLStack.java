@@ -2,7 +2,7 @@
  * This class represents an extended stack ADT implemented using a doubly linked list.
  * @author Jordan Buckindale
  * @Student #251246279
- * @Date March 24th 2022
+ * @Date March 22th 2022
  */
 
 public class DLStack<T> implements DLStackADT<T> {
@@ -50,6 +50,8 @@ public class DLStack<T> implements DLStackADT<T> {
 			
 			// set previous top element next reference to new top element.
 			top.setNext(newTop);
+			// set the reference to previous chambef for new top of stack.
+			newTop.setPrevious(top);
 			// set top reference to the top of the stack with new element.
 			top = newTop;
 			// set next node reference of top element to null.
@@ -69,7 +71,7 @@ public class DLStack<T> implements DLStackADT<T> {
 		if (top == null) {
 			
 			// throw exception if stack is empty.
-			throw new EmptyStackException("Empty Stack");
+			throw new EmptyStackException("Stack is empty.");
 		}
 		else {
 			
@@ -218,7 +220,7 @@ public class DLStack<T> implements DLStackADT<T> {
 		// declare empty string.
         String s = "";
 
-        // create a
+        // create a node that references top element.
         DoubleLinkedNode<T> current = top;
 
         // iterate through the stack.
