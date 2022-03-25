@@ -41,7 +41,7 @@ public class DLStack<T> implements DLStackADT<T> {
 			// create new node element and assign it to top.
 			top = new DoubleLinkedNode<T>(element);
 		}
-		else {
+		else { 
 			
 			// declare new node variable for new top element. 
 			DoubleLinkedNode<T> newTop;

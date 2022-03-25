@@ -69,7 +69,7 @@ public class FindPath {
 			
 			// peak top stack to get current chamber.
 			Chamber current = chamberStack.peek();
-			System.out.println(current);
+			
 			// check if treasure chamber and if all treasures are found, exit while loop.
 			if (current.isTreasure() && numTreasures == numTreasuresFound) {
 				
@@ -97,7 +97,7 @@ public class FindPath {
 						
 						// increment treasures found if current chamber contains treasure.
 						numTreasuresFound ++;
-					}
+					} 
 				}
 				// pop last chamber and mark as popped. (dead end)
 				else {
